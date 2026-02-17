@@ -1,6 +1,6 @@
 # Patterns for Autonomous Agent Systems
 
-These patterns were extracted from operating a multi-agent system in production. They are not theoretical. Each was learned through failure, tuned through iteration, and validated with [real output](https://github.com/Light-Heart-Labs/Android-Labs).
+These patterns were extracted from operating a multi-agent system in production. They are not theoretical. Each was learned through failure, tuned through iteration, and validated with real output (3,464 commits from 3 AI agents over 8 days).
 
 **The patterns are framework-agnostic.** You do not need OpenClaw, vLLM, or any specific tool to apply them. The implementations in this repo are one way to do it. The principles apply to LangChain, AutoGen, CrewAI, custom agent loops, or anything else.
 
@@ -132,8 +132,8 @@ Anyone can add projects to the backlog. Anyone can claim unclaimed work. Status 
 
 ### This Toolkit's Implementation
 
-- [Android-Labs/MISSIONS.md](https://github.com/Light-Heart-Labs/Android-Labs/blob/main/MISSIONS.md) — the live reference example with 12 missions
-- [Android-Labs/PROJECTS.md](https://github.com/Light-Heart-Labs/Android-Labs/blob/main/PROJECTS.md) — the live work board
+- Android-Labs `MISSIONS.md` (private) — the live reference example with 12 missions
+- Android-Labs `PROJECTS.md` (private) — the live work board
 
 ---
 

@@ -8,7 +8,7 @@ The OpenClaw Collective is a self-regulating cluster of AI agents running autono
 
 This document describes the architecture that makes this work: the supervision hierarchy, the workspace-as-brain pattern for persistent identity, mission-based governance for strategic alignment, session lifecycle management, and a five-layer safety stack that keeps the system running when agents inevitably break things.
 
-The companion repository [Android-Labs](https://github.com/Light-Heart-Labs/Android-Labs) is the proof of work — 3,464 commits from 3 AI agents over 8 days, producing three shipping products, 50+ technical research documents, and a production infrastructure that runs itself.
+The companion repository **Android-Labs** (private) is the proof of work — 3,464 commits from 3 AI agents over 8 days, producing three shipping products, 50+ technical research documents, and a production infrastructure that runs itself.
 
 This toolkit provides the infrastructure components. This document explains how they fit together.
 
@@ -192,7 +192,7 @@ The rule: **every project must connect to a mission. If it doesn't connect, ask 
 
 80% of effort goes to product missions (M1-M5, M12). 20% supports the rest. When a mission hits its "done when," effort shifts to the next highest priority.
 
-See [Android-Labs/MISSIONS.md](https://github.com/Light-Heart-Labs/Android-Labs/blob/main/MISSIONS.md) for the live example.
+The live example is in the Android-Labs repository (`MISSIONS.md`), where the Collective's 12 missions are defined with full problem statements, completion criteria, and priority guidance.
 
 ### Session Lifecycle Management
 
@@ -224,7 +224,7 @@ The design principle: **agents operate, Guardian protects.** The agent can do wh
 
 ### Git as Shared Memory Bus
 
-The workspace lives in a Git repository ([Android-Labs](https://github.com/Light-Heart-Labs/Android-Labs)) synced across both servers. Every heartbeat cycle, agents pull the latest state. This creates natural sync points without custom infrastructure.
+The workspace lives in a shared Git repository (Android-Labs) synced across both servers. Every heartbeat cycle, agents pull the latest state. This creates natural sync points without custom infrastructure.
 
 Merge conflicts are a feature, not a bug — they signal coordination problems that need resolution.
 
@@ -350,7 +350,7 @@ The layers are independent — any one can fail without bringing down the others
 
 ## Proof of Work: Android-Labs
 
-The architecture described above isn't theoretical. [Android-Labs](https://github.com/Light-Heart-Labs/Android-Labs) is the working repository where the Collective operates.
+The architecture described above isn't theoretical. **Android-Labs** is the working repository where the Collective operates.
 
 ### By the Numbers
 
@@ -398,7 +398,7 @@ Each component in this repository maps to a specific architectural role:
 | [Golden Configs](configs/) | Correct OpenClaw + vLLM configuration | Infrastructure |
 | [Workspace Templates](workspace/) | Workspace-as-brain pattern | Identity |
 
-The toolkit is the infrastructure layer. The [architecture principles](#architecture-principles) are the design layer. [Android-Labs](https://github.com/Light-Heart-Labs/Android-Labs) is the application layer.
+The toolkit is the infrastructure layer. The [architecture principles](#architecture-principles) are the design layer. Android-Labs is the application layer.
 
 You can use the tools without the architecture. But together, they enable something more than the sum of their parts: a system that runs itself.
 
@@ -410,7 +410,7 @@ You can use the tools without the architecture. But together, they enable someth
 - **[docs/DESIGN-DECISIONS.md](docs/DESIGN-DECISIONS.md)** — Why we made the choices we did (session limits, ping cycles, deterministic supervision, and more)
 - **[docs/PATTERNS.md](docs/PATTERNS.md)** — Six transferable patterns for autonomous agent systems, applicable to any framework
 - **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** — Deep dive on the vLLM Tool Call Proxy internals
-- **[Android-Labs](https://github.com/Light-Heart-Labs/Android-Labs)** — The proof of work
+- **Android-Labs** (private) — The proof of work repository where the Collective operates
 
 ---
 

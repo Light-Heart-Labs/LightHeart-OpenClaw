@@ -4,7 +4,7 @@
 
 An open source operations toolkit for persistent LLM agents. Built for [OpenClaw](https://openclaw.io) but many components work with any agent framework or service stack.
 
-This toolkit is the infrastructure layer of a proven multi-agent architecture — the [OpenClaw Collective](COLLECTIVE.md) — where 3 AI agents coordinate autonomously on shared projects using local GPU hardware. The companion repository [Android-Labs](https://github.com/Light-Heart-Labs/Android-Labs) is the proof of work: 3,464 commits from 3 agents over 8 days, producing three shipping products and 50+ technical research documents. These tools kept them running.
+This toolkit is the infrastructure layer of a proven multi-agent architecture — the [OpenClaw Collective](COLLECTIVE.md) — where 3 AI agents coordinate autonomously on shared projects using local GPU hardware. The companion repository **Android-Labs** (private) is the proof of work: 3,464 commits from 3 agents over 8 days, producing three shipping products and 50+ technical research documents. These tools kept them running.
 
 | Component | What it does | Requires OpenClaw? | Platform |
 |-----------|-------------|-------------------|----------|
@@ -423,7 +423,7 @@ See [docs/SETUP.md](docs/SETUP.md) for the full troubleshooting guide. Quick hit
 - **[docs/DESIGN-DECISIONS.md](docs/DESIGN-DECISIONS.md)** — Why we made the choices we did: session limits, ping cycles, deterministic supervision, and more
 - **[docs/PATTERNS.md](docs/PATTERNS.md)** — Six transferable patterns for autonomous agent systems, applicable to any framework
 - **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** — Deep dive on the vLLM Tool Call Proxy internals
-- **[Android-Labs](https://github.com/Light-Heart-Labs/Android-Labs)** — Proof of work: 3,464 commits from 3 AI agents in 8 days
+- **Android-Labs** (private) — Proof of work: 3,464 commits from 3 AI agents in 8 days
 
 ---
 
