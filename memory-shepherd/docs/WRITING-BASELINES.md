@@ -52,6 +52,9 @@ The most effective pattern we've found is explicit autonomy tiers. Agents need t
 
 This eliminates the "should I ask or just do it?" hesitation that wastes cycles.
 
+For a deeper dive into autonomy tiers and infrastructure protection, see
+[GUARDIAN.md](../../docs/GUARDIAN.md).
+
 ### 4. Capabilities and Tools
 
 Tell the agent what it can actually use. Agents that know their tools are dramatically more effective than ones guessing.
