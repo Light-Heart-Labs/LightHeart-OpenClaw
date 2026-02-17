@@ -34,6 +34,11 @@ Periodic memory reset for persistent LLM agents. Agents accumulate scratch notes
 
 Defines a `---` separator convention: everything above is operator-controlled identity (rules, capabilities, pointers), everything below is agent scratch space that gets archived and cleared.
 
+### Guardian
+Self-healing process watchdog for LLM infrastructure. Runs as a root systemd service that agents cannot kill or modify. Monitors processes, systemd services, Docker containers, and file integrity — automatically restoring from known-good backups when things break.
+
+Supports tiered health checks (port listening, HTTP endpoints, custom commands, JSON validation), a recovery cascade (soft restart → backup restore → restart), generational backups with immutable flags, and restart delegation chains. Everything is config-driven via an INI file.
+
 ### Architecture Docs
 Deep-dive documentation on how OpenClaw talks to vLLM, why the proxy exists, how session files work, and the five failure points that kill local setups.
 
@@ -247,6 +252,14 @@ LightHeart-OpenClaw/
 │   ├── baselines/                     # Baseline MEMORY.md templates
 │   └── docs/
 │       └── WRITING-BASELINES.md       # Guide to writing effective baselines
+├── guardian/                           # Self-healing process watchdog
+│   ├── guardian.sh                    # Config-driven watchdog script
+│   ├── guardian.conf.example          # Sanitized example config
+│   ├── guardian.service               # Systemd unit template
+│   ├── install.sh                     # Installer (systemd + immutable flags)
+│   ├── uninstall.sh                   # Uninstaller
+│   └── docs/
+│       └── HEALTH-CHECKS.md           # Health check & recovery reference
 ├── docs/
 │   ├── SETUP.md                       # Full local setup guide
 │   ├── ARCHITECTURE.md                # How it all fits together
