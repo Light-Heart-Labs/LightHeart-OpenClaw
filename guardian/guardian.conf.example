@@ -82,6 +82,8 @@ max_soft_restarts=3
 restart_grace=15
 
 # Example: file integrity with JSON validation
+# For file-integrity, "soft restart" IS a backup restore, so max_soft_restarts=0
+# skips the redundant phase and goes straight to restore.
 [my-settings]
 enabled=false
 type=file-integrity
@@ -90,7 +92,7 @@ protected_files=/opt/myapp/data/settings.json
 required_json_keys=session_limit,poll_interval,agents
 # Pin specific JSON values (dot-notation path=expected_value)
 # required_json_values=agents.defaults.model.primary=gpt-4
-max_soft_restarts=1
+max_soft_restarts=0
 restart_grace=5
 
 # ============================================================================

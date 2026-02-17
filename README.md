@@ -1,8 +1,18 @@
 # LightHeart OpenClaw
 
-**Your agents never crash from context overflow again.**
+**Keep your AI agents running. No matter what they do to themselves.**
 
-An open source toolkit for [OpenClaw](https://openclaw.io) agents. Session lifecycle management, API cost monitoring, local model tool-calling fixes, golden configs, and everything else you need to run OpenClaw agents that don't fall over.
+An open source operations toolkit for persistent LLM agents. Built for [OpenClaw](https://openclaw.io) but many components work with any agent framework or service stack.
+
+| Component | What it does | Requires OpenClaw? | Platform |
+|-----------|-------------|-------------------|----------|
+| [Session Watchdog](#session-watchdog) | Auto-cleans bloated sessions before context overflow | Yes | Linux, Windows |
+| [vLLM Tool Call Proxy](#vllm-tool-call-proxy-v4) | Makes local model tool calling work | Yes | Linux |
+| [Token Spy](#token-spy--api-cost--usage-monitor) | API cost monitoring with real-time dashboard | No (any OpenAI/Anthropic client) | Linux |
+| [Guardian](#guardian) | Self-healing process watchdog with backup restore | No (any Linux services) | Linux (root) |
+| [Memory Shepherd](#memory-shepherd) | Periodic memory reset to prevent agent drift | No (any markdown-based agent memory) | Linux |
+| [Golden Configs](#golden-configs) | Working config templates for OpenClaw + vLLM | Yes | Any |
+| [Workspace Templates](#workspace-templates) | Agent personality/identity starter files | Yes | Any |
 
 ---
 
@@ -32,12 +42,12 @@ Starter personality files (`SOUL.md`, `IDENTITY.md`, `TOOLS.md`, `MEMORY.md`) th
 ### Memory Shepherd
 Periodic memory reset for persistent LLM agents. Agents accumulate scratch notes in `MEMORY.md` during operation — Memory Shepherd archives those notes and restores the file to a curated baseline on a schedule. Keeps agents on-mission by preventing context drift, memory bloat, and self-modification of instructions.
 
-Defines a `---` separator convention: everything above is operator-controlled identity (rules, capabilities, pointers), everything below is agent scratch space that gets archived and cleared.
+Defines a `---` separator convention: everything above is operator-controlled identity (rules, capabilities, pointers), everything below is agent scratch space that gets archived and cleared. See [memory-shepherd/README.md](memory-shepherd/README.md) for full documentation.
 
 ### Guardian
 Self-healing process watchdog for LLM infrastructure. Runs as a root systemd service that agents cannot kill or modify. Monitors processes, systemd services, Docker containers, and file integrity — automatically restoring from known-good backups when things break.
 
-Supports tiered health checks (port listening, HTTP endpoints, custom commands, JSON validation), a recovery cascade (soft restart → backup restore → restart), generational backups with immutable flags, and restart delegation chains. Everything is config-driven via an INI file.
+Supports tiered health checks (port listening, HTTP endpoints, custom commands, JSON validation), a recovery cascade (soft restart → backup restore → restart), generational backups with immutable flags, and restart delegation chains. Everything is config-driven via an INI file. See [guardian/README.md](guardian/README.md) for full documentation.
 
 ### Architecture Docs
 Deep-dive documentation on how OpenClaw talks to vLLM, why the proxy exists, how session files work, and the five failure points that kill local setups.
@@ -98,6 +108,29 @@ export VLLM_API_KEY=vllm-local
 
 # Test
 openclaw agent --local --agent main -m 'What is 2+2?'
+```
+
+### Option 4: Guardian (Process Watchdog)
+
+Works with any Linux service stack — not OpenClaw-specific. See [guardian/README.md](guardian/README.md) for full docs.
+
+```bash
+cd guardian
+cp guardian.conf.example guardian.conf
+nano guardian.conf          # Define your monitored resources
+nano guardian.service       # Add your paths to ReadWritePaths
+sudo ./install.sh           # Installs to systemd as root service
+```
+
+### Option 5: Memory Shepherd (Memory Reset)
+
+Works with any agent that uses markdown memory files. See [memory-shepherd/README.md](memory-shepherd/README.md) for full docs.
+
+```bash
+cd memory-shepherd
+cp memory-shepherd.conf.example memory-shepherd.conf
+nano memory-shepherd.conf   # Define your agents and baselines
+sudo ./install.sh           # Installs as systemd timer
 ```
 
 ---
