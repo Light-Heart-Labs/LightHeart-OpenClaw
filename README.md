@@ -14,9 +14,26 @@ enough to accumulate state. The remaining 30% is a reference implementation
 using [OpenClaw](https://openclaw.io) and vLLM that demonstrates the patterns
 concretely.
 
+This is the infrastructure layer of a proven multi-agent architecture — the
+[OpenClaw Collective](COLLECTIVE.md) — where 3 AI agents coordinate
+autonomously on shared projects using local GPU hardware. The companion
+repository **Android-Labs** (private) is the proof of work: 3,464 commits from
+3 agents over 8 days, producing three shipping products and 50+ technical
+research documents. These tools kept them running.
+
 **Start here:** [docs/PHILOSOPHY.md](docs/PHILOSOPHY.md) — the conceptual
 foundation, five pillars, complete failure taxonomy, and a reading map based on
 what you're building.
+
+| Component | What it does | Requires OpenClaw? | Platform |
+|-----------|-------------|-------------------|----------|
+| [Session Watchdog](#session-watchdog) | Auto-cleans bloated sessions before context overflow | Yes | Linux, Windows |
+| [vLLM Tool Call Proxy](#vllm-tool-call-proxy-v4) | Makes local model tool calling work | Yes | Linux |
+| [Token Spy](#token-spy--api-cost--usage-monitor) | API cost monitoring with real-time dashboard | No (any OpenAI/Anthropic client) | Linux |
+| [Guardian](#guardian) | Self-healing process watchdog with backup restore | No (any Linux services) | Linux (root) |
+| [Memory Shepherd](#memory-shepherd) | Periodic memory reset to prevent agent drift | No (any markdown-based agent memory) | Linux |
+| [Golden Configs](#golden-configs) | Working config templates for OpenClaw + vLLM | Yes | Any |
+| [Workspace Templates](#workspace-templates) | Agent personality/identity starter files | Yes | Any |
 
 ---
 
@@ -59,6 +76,13 @@ scratch notes and restores MEMORY.md to a curated baseline on a schedule.
 Defines the `---` separator convention: operator-controlled identity above,
 agent scratch space below.
 
+**Guardian** — Self-healing process watchdog for LLM infrastructure. Runs as a
+root systemd service that agents cannot kill or modify. Monitors processes,
+systemd services, Docker containers, and file integrity — automatically
+restoring from known-good backups when things break. Supports tiered health
+checks, recovery cascades, and generational backups. See
+[guardian/README.md](guardian/README.md) for full documentation.
+
 **Golden Configs** — Battle-tested `openclaw.json` and `models.json` with the
 critical `compat` block that prevents silent failures. Workspace templates for
 agent personality, identity, tools, and working memory.
@@ -66,6 +90,39 @@ agent personality, identity, tools, and working memory.
 **Architecture Docs** — How OpenClaw talks to vLLM, why the proxy exists, how
 session files work, and the five failure points that kill local setups.
 See [ARCHITECTURE.md](docs/ARCHITECTURE.md) and [SETUP.md](docs/SETUP.md).
+
+---
+
+## The Bigger Picture
+
+These tools were extracted from a running multi-agent system — the [OpenClaw Collective](COLLECTIVE.md) — where AI agents coordinate autonomously on long-term projects. Here's how each component fits:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│               Mission Governance (MISSIONS.md)           │
+│              Constrains what agents work on               │
+├─────────────────────────────────────────────────────────┤
+│            Deterministic Supervisor (Android-18)          │
+│           Timed pings, session resets, accountability     │
+├──────────────┬──────────────┬───────────────────────────┤
+│ Session      │ Memory       │ Infrastructure             │
+│ Watchdog     │ Shepherd     │ Guardian                   │
+│ + Token Spy  │              │                            │
+│              │              │                            │
+│ Context      │ Identity     │ Process monitoring,        │
+│ overflow     │ drift        │ file integrity,            │
+│ prevention   │ prevention   │ auto-restore               │
+├──────────────┴──────────────┴───────────────────────────┤
+│              Workspace Templates (SOUL, IDENTITY,         │
+│              TOOLS, MEMORY) — Persistent agent identity   │
+├─────────────────────────────────────────────────────────┤
+│     vLLM Tool Proxy + Golden Configs — Local inference    │
+└─────────────────────────────────────────────────────────┘
+```
+
+For the full architecture: **[COLLECTIVE.md](COLLECTIVE.md)**
+For transferable patterns applicable to any agent framework: **[docs/PATTERNS.md](docs/PATTERNS.md)**
+For the rationale behind every design choice: **[docs/DESIGN-DECISIONS.md](docs/DESIGN-DECISIONS.md)**
 
 ---
 
@@ -123,6 +180,29 @@ export VLLM_API_KEY=vllm-local
 
 # Test
 openclaw agent --local --agent main -m 'What is 2+2?'
+```
+
+### Option 4: Guardian (Process Watchdog)
+
+Works with any Linux service stack — not OpenClaw-specific. See [guardian/README.md](guardian/README.md) for full docs.
+
+```bash
+cd guardian
+cp guardian.conf.example guardian.conf
+nano guardian.conf          # Define your monitored resources
+nano guardian.service       # Add your paths to ReadWritePaths
+sudo ./install.sh           # Installs to systemd as root service
+```
+
+### Option 5: Memory Shepherd (Memory Reset)
+
+Works with any agent that uses markdown memory files. See [memory-shepherd/README.md](memory-shepherd/README.md) for full docs.
+
+```bash
+cd memory-shepherd
+cp memory-shepherd.conf.example memory-shepherd.conf
+nano memory-shepherd.conf   # Define your agents and baselines
+sudo ./install.sh           # Installs as systemd timer
 ```
 
 ---
@@ -295,6 +375,14 @@ LightHeart-OpenClaw/
 │   ├── baselines/                     # Baseline MEMORY.md templates
 │   └── docs/
 │       └── WRITING-BASELINES.md       # Guide to writing effective baselines
+├── guardian/                           # Self-healing process watchdog
+│   ├── guardian.sh                    # Config-driven watchdog script
+│   ├── guardian.conf.example          # Sanitized example config
+│   ├── guardian.service               # Systemd unit template
+│   ├── install.sh                     # Installer (systemd + immutable flags)
+│   ├── uninstall.sh                   # Uninstaller
+│   └── docs/
+│       └── HEALTH-CHECKS.md           # Health check & recovery reference
 ├── docs/
 │   ├── PHILOSOPHY.md                  # Start here — pillars, failures, reading map
 │   ├── SETUP.md                       # Full local setup guide
@@ -370,10 +458,20 @@ See [docs/SETUP.md](docs/SETUP.md) for the full troubleshooting guide. Quick hit
 
 ---
 
+## Further Reading
+
+- **[COLLECTIVE.md](COLLECTIVE.md)** — Full architecture of the multi-agent system this toolkit powers
+- **[docs/DESIGN-DECISIONS.md](docs/DESIGN-DECISIONS.md)** — Why we made the choices we did: session limits, ping cycles, deterministic supervision, and more
+- **[docs/PATTERNS.md](docs/PATTERNS.md)** — Six transferable patterns for autonomous agent systems, applicable to any framework
+- **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** — Deep dive on the vLLM Tool Call Proxy internals
+- **Android-Labs** (private) — Proof of work: 3,464 commits from 3 AI agents in 8 days
+
+---
+
 ## License
 
 Apache 2.0 — see [LICENSE](LICENSE)
 
 ---
 
-Built from production experience by [Lightheart Labs](https://github.com/Light-Heart-Labs) and their AI agent team. The patterns were discovered by the agents. The docs were written by the agents. The lessons were learned the hard way.
+Built from production experience by [Lightheart Labs](https://github.com/Light-Heart-Labs) and the [OpenClaw Collective](COLLECTIVE.md). The patterns were discovered by the agents. The docs were written by the agents. The lessons were learned the hard way.
