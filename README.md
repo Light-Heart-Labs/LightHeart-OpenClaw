@@ -4,6 +4,8 @@
 
 An open source operations toolkit for persistent LLM agents. Built for [OpenClaw](https://openclaw.io) but many components work with any agent framework or service stack.
 
+This toolkit is the infrastructure layer of a proven multi-agent architecture — the [OpenClaw Collective](COLLECTIVE.md) — where 3 AI agents coordinate autonomously on shared projects using local GPU hardware. The companion repository [Android-Labs](https://github.com/Light-Heart-Labs/Android-Labs) is the proof of work: 3,464 commits from 3 agents over 8 days, producing three shipping products and 50+ technical research documents. These tools kept them running.
+
 | Component | What it does | Requires OpenClaw? | Platform |
 |-----------|-------------|-------------------|----------|
 | [Session Watchdog](#session-watchdog) | Auto-cleans bloated sessions before context overflow | Yes | Linux, Windows |
@@ -51,6 +53,39 @@ Supports tiered health checks (port listening, HTTP endpoints, custom commands, 
 
 ### Architecture Docs
 Deep-dive documentation on how OpenClaw talks to vLLM, why the proxy exists, how session files work, and the five failure points that kill local setups.
+
+---
+
+## The Bigger Picture
+
+These tools were extracted from a running multi-agent system — the [OpenClaw Collective](COLLECTIVE.md) — where AI agents coordinate autonomously on long-term projects. Here's how each component fits:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│               Mission Governance (MISSIONS.md)           │
+│              Constrains what agents work on               │
+├─────────────────────────────────────────────────────────┤
+│            Deterministic Supervisor (Android-18)          │
+│           Timed pings, session resets, accountability     │
+├──────────────┬──────────────┬───────────────────────────┤
+│ Session      │ Memory       │ Infrastructure             │
+│ Watchdog     │ Shepherd     │ Guardian                   │
+│ + Token Spy  │              │                            │
+│              │              │                            │
+│ Context      │ Identity     │ Process monitoring,        │
+│ overflow     │ drift        │ file integrity,            │
+│ prevention   │ prevention   │ auto-restore               │
+├──────────────┴──────────────┴───────────────────────────┤
+│              Workspace Templates (SOUL, IDENTITY,         │
+│              TOOLS, MEMORY) — Persistent agent identity   │
+├─────────────────────────────────────────────────────────┤
+│     vLLM Tool Proxy + Golden Configs — Local inference    │
+└─────────────────────────────────────────────────────────┘
+```
+
+For the full architecture: **[COLLECTIVE.md](COLLECTIVE.md)**
+For transferable patterns applicable to any agent framework: **[docs/PATTERNS.md](docs/PATTERNS.md)**
+For the rationale behind every design choice: **[docs/DESIGN-DECISIONS.md](docs/DESIGN-DECISIONS.md)**
 
 ---
 
@@ -382,10 +417,20 @@ See [docs/SETUP.md](docs/SETUP.md) for the full troubleshooting guide. Quick hit
 
 ---
 
+## Further Reading
+
+- **[COLLECTIVE.md](COLLECTIVE.md)** — Full architecture of the multi-agent system this toolkit powers
+- **[docs/DESIGN-DECISIONS.md](docs/DESIGN-DECISIONS.md)** — Why we made the choices we did: session limits, ping cycles, deterministic supervision, and more
+- **[docs/PATTERNS.md](docs/PATTERNS.md)** — Six transferable patterns for autonomous agent systems, applicable to any framework
+- **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** — Deep dive on the vLLM Tool Call Proxy internals
+- **[Android-Labs](https://github.com/Light-Heart-Labs/Android-Labs)** — Proof of work: 3,464 commits from 3 AI agents in 8 days
+
+---
+
 ## License
 
 Apache 2.0 — see [LICENSE](LICENSE)
 
 ---
 
-Built by [Lightheart Labs](https://github.com/Light-Heart-Labs) from real production pain running autonomous AI agents on local hardware.
+Built by [Lightheart Labs](https://github.com/Light-Heart-Labs) and the [OpenClaw Collective](COLLECTIVE.md) from real production pain running autonomous AI agents on local hardware.

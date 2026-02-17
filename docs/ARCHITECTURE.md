@@ -1,5 +1,7 @@
 # Architecture — How It All Fits Together
 
+> **Scope:** This document covers the internal architecture of the vLLM Tool Call Proxy. For the architecture of the full multi-agent system this proxy serves, see [COLLECTIVE.md](../COLLECTIVE.md). For transferable patterns applicable to any agent framework, see [PATTERNS.md](PATTERNS.md).
+
 ## The Problem
 
 OpenClaw can't talk directly to vLLM for tool-calling tasks because of three
