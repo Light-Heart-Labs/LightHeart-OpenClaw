@@ -1,6 +1,6 @@
 # Dream Server Quick Start
 
-Get your local AI stack running in under 10 minutes.
+One command to a fully running local AI stack. No manual config, no dependency hell.
 
 ## Prerequisites
 
