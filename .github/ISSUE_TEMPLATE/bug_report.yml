@@ -1,0 +1,94 @@
+name: Bug Report
+description: Report a bug in Lighthouse AI (Dream Server, Guardian, Memory Shepherd, Token Spy)
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug. Please fill out the sections below so we can reproduce and fix the issue.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear summary of the bug.
+      placeholder: What went wrong?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Step-by-step instructions to trigger the bug.
+      placeholder: |
+        1. Run `./install.sh`
+        2. Select option X
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: What you expected to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual Behavior
+      description: What actually happened instead.
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating System
+      placeholder: "e.g. Ubuntu 24.04, Windows 11, macOS 14"
+    validations:
+      required: true
+
+  - type: input
+    id: gpu
+    attributes:
+      label: GPU
+      placeholder: "e.g. NVIDIA RTX 4090 24 GB, AMD RX 7900 XTX, None (CPU only)"
+    validations:
+      required: true
+
+  - type: input
+    id: docker-version
+    attributes:
+      label: Docker Version
+      placeholder: "e.g. Docker 27.1.1, Podman 5.0"
+    validations:
+      required: true
+
+  - type: input
+    id: vram
+    attributes:
+      label: VRAM
+      placeholder: "e.g. 24 GB, 8 GB"
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Paste any relevant log output. This will be rendered as code.
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help illustrate the problem.
+    validations:
+      required: false

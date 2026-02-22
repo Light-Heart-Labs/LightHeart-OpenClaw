@@ -1,0 +1,62 @@
+name: ShellCheck
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  shellcheck:
+    name: Lint shell scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install ShellCheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+          shellcheck --version
+
+      - name: Run ShellCheck on dream-server shell scripts
+        run: |
+          # Find all .sh files under dream-server/
+          shfiles=$(find dream-server/ -name '*.sh' -type f)
+
+          if [ -z "$shfiles" ]; then
+            echo "No .sh files found under dream-server/"
+            exit 0
+          fi
+
+          echo "Found $(echo "$shfiles" | wc -l) shell scripts"
+          echo ""
+
+          # Run shellcheck:
+          #   -e SC1091  exclude "can't follow sourced files"
+          #   -e SC2034  exclude "unused variables" (many are used by sourced files)
+          #   -S warning treat warnings and above as reportable
+          # shellcheck returns:
+          #   0 = no issues
+          #   1 = errors or warnings found
+          # We fail the job only on error-severity issues by using -S error,
+          # but still display warnings for visibility.
+
+          # First pass: display all warnings and errors for visibility
+          echo "=== ShellCheck results (warnings + errors) ==="
+          echo "$shfiles" | xargs shellcheck \
+            --exclude=SC1091,SC2034 \
+            --severity=warning \
+            --format=gcc \
+            || true
+
+          echo ""
+          echo "=== Checking for error-severity issues (will fail if found) ==="
+
+          # Second pass: fail only on error severity
+          echo "$shfiles" | xargs shellcheck \
+            --exclude=SC1091,SC2034 \
+            --severity=error
