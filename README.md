@@ -13,9 +13,9 @@
 
 ---
 
-## Dream Server — Local AI in 10 Minutes
+## Dream Server — One Command, Full AI Stack
 
-One installer. Bare metal to a fully running AI stack — LLM, chat UI, voice agents, workflow automation, RAG, and privacy tools. No cloud. No subscriptions. Runs entirely offline after setup.
+One installer gets you from bare metal to a fully running local AI stack — LLM inference, chat UI, voice agents, workflow automation, RAG, and privacy tools. No manual config. No dependency hell. No six months of piecing it together. Run one command, answer a few questions, everything works.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Light-Heart-Labs/Lighthouse-AI/main/dream-server/get-dream-server.sh | bash

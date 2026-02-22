@@ -400,7 +400,7 @@ Each component in this repository maps to a specific architectural role:
 
 The toolkit is the infrastructure layer. The [architecture principles](#architecture-principles) are the design layer. Android-Labs is the application layer.
 
-[**Dream Server**](dream-server/) is how all of this ships to users. It packages vLLM, Open WebUI, voice agents, n8n workflows, RAG, and Privacy Shield into a single installer that auto-detects your GPU and gets everything running in 10 minutes. The toolkit components above are the operational backbone that keeps it stable. Dream Server is the product the Collective built — and the fastest way to get local AI running on your own hardware.
+[**Dream Server**](dream-server/) is how all of this ships to users. It packages vLLM, Open WebUI, voice agents, n8n workflows, RAG, and Privacy Shield into a single installer that auto-detects your GPU and gets everything running with a single command. The toolkit components above are the operational backbone that keeps it stable. Dream Server is the product the Collective built — and the fastest way to get local AI running on your own hardware.
 
 You can use the tools without the architecture. But together, they enable something more than the sum of their parts: a system that runs itself.
 

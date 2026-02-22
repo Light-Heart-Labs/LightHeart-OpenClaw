@@ -4,7 +4,7 @@ First public release of Dream Server -- your turnkey local AI stack.
 
 **Your hardware. Your data. Your rules.**
 
-One installer. Bare metal to fully running local AI in 10 minutes -- LLM inference, chat UI, voice agents, workflow automation, RAG, and privacy tools. No subscriptions. No cloud. Runs entirely offline.
+One installer. Bare metal to a fully running local AI stack -- LLM inference, chat UI, voice agents, workflow automation, RAG, and privacy tools. No manual config. No dependency hell. Run one command and everything works.
 
 ## Highlights
 
