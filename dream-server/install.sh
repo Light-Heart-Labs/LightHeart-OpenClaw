@@ -1229,9 +1229,11 @@ AUTH_EOF
 }
 MODELS_EOF
         log "Generated OpenClaw home config (model: $OPENCLAW_MODEL, gateway token set)"
-        # Copy workspace personality files (SOUL.md etc.)
+        # Create workspace directory (must exist before Docker Compose,
+        # otherwise Docker auto-creates it as root and the container can't write to it)
+        mkdir -p "$INSTALL_DIR/config/openclaw/workspace"
+        # Copy workspace personality files (SOUL.md etc.) if the repo ships any
         if [[ -d "$SCRIPT_DIR/config/openclaw/workspace" ]]; then
-            mkdir -p "$INSTALL_DIR/config/openclaw/workspace"
             cp -r "$SCRIPT_DIR/config/openclaw/workspace"/* "$INSTALL_DIR/config/openclaw/workspace/" 2>/dev/null || true
             log "Installed OpenClaw workspace files (agent personality)"
         fi
